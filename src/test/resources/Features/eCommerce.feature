@@ -9,8 +9,8 @@ Feature: E-commerce webpage
   Scenario Outline: Validate Add To Cart option
     Given I click on Shop link on Home Page
     And I verify the cart count as <OldCartCount>
-#    And I added <Product> to cart
-#    And I verify the new cart count as <NewCartCount>
+    And I added <Product> to cart
+    And I verify the new cart count as <NewCartCount>
     Examples:
       | OldCartCount | Product          | NewCartCount |
       | 0            | Branded Converse | 1            |
