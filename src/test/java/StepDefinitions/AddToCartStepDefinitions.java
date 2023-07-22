@@ -1,9 +1,11 @@
 package StepDefinitions;
 
 import SelenidePageObjects.AddToCartPage;
+import Utilities.CommonStepData;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import org.openqa.selenium.WebDriver;
+
+import java.awt.*;
 
 
 public class AddToCartStepDefinitions {
@@ -11,10 +13,11 @@ public class AddToCartStepDefinitions {
     private final AddToCartPage addToCartPage;
 
     public AddToCartStepDefinitions(){
+
         addToCartPage=new AddToCartPage(CommonStepData.driver);
     }
 
-    @Given("I click on Shop link on Home Page")
+    @Given("^I click on Shop link on Home Page$")
     public void iClickOnShopLinkOnHomePage() {
         addToCartPage.clickOnShopLink();
     }
@@ -30,7 +33,7 @@ public class AddToCartStepDefinitions {
     }
 
     @And("^I added (.+) to cart$")
-    public void iAddedProductToCart(String product) {
+    public void iAddedProductToCart(String product) throws AWTException {
         addToCartPage.addProductToCart(product);
     }
 }
