@@ -10,7 +10,7 @@ import java.util.Properties;
 public class ConfigurationProperties {
 
     static InputStream fileStream=null;
-    static String fileName="config.properties";
+    static String fileName= "config.properties";
     static Properties properties=new Properties();
 
 //    public static String getPropertyValueByKey(String inputKey){

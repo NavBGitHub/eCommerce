@@ -1,24 +1,24 @@
 package StepDefinitions;
 
 import SelenidePageObjects.AddToCartPage;
-import Utilities.CommonStepData;
+import Utilities.CommonAttribute;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 
 import java.awt.*;
 
 
-public class AddToCartStepDefinitions {
+public class AddToCartSteps {
 
     private final AddToCartPage addToCartPage;
 
-    public AddToCartStepDefinitions(){
+    public AddToCartSteps(){
 
-        addToCartPage=new AddToCartPage(CommonStepData.driver);
+        addToCartPage=new AddToCartPage(CommonAttribute.driver);
     }
 
     @Given("^I click on Shop link on Home Page$")
-    public void iClickOnShopLinkOnHomePage() {
+     public void iClickOnShopLinkOnHomePage() {
         addToCartPage.clickOnShopLink();
     }
 

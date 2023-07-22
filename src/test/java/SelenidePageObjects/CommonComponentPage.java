@@ -1,20 +1,18 @@
 package SelenidePageObjects;
 
-import CommonAttributes.Constants;
+import Base.Constants;
 import Utilities.ConfigurationProperties;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
-import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.title;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.junit.Assert.*;
 
@@ -22,66 +20,99 @@ public class CommonComponentPage {
 
     public static Logger log=LogManager.getLogger(CommonComponentPage.class);
 
+//    @FindBy(how = How.XPATH, using = "Xpath")
+//    private SelenideElement element;
 
-    @FindBy(how = How.XPATH, using = "Xpath")
-    private WebElement element;
+    public SelenideElement buttonMyAccount(){
+        return $(By.xpath("//a[text()='My account']"));
+    }
 
-    By buttonMyAccount =By.xpath("//a[text()='My account']");
-    By inputUserName=By.xpath("//input[@id='username']");
-    By inputPassword= By.xpath("//input[@id='password']");
-    By buttonLogIn = By.xpath("//button[@name='login']");
-    By userName = By.xpath("//article//strong");
+//    By buttonMyAccount =By.xpath("//a[text()='My account']");
+    private final By inputUserName=By.xpath("//input[@id='username']");
+    private final By inputPassword= By.xpath("//input[@id='password']");
+    private final By buttonLogIn = By.xpath("//button[@name='login']");
+    private final By userName = By.xpath("//article//strong");
 
     public CommonComponentPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-
-
-    public void LoginToMyAccount() throws IOException {
-        this.clickOnMyAccount();
-        this.enterUserName();
-        this.enterPassword();
-        this.clickOnLogInButton();
+    public void openUrl(){
+        maximizeWindow()
+                .assertUrlAndTitle();
     }
 
-    public void clickOnMyAccount(){
-        log.info("ewwwwwwwwwwwww started");
+    public CommonComponentPage maximizeWindow(){
+        getWebDriver().manage().window().maximize();
+        log.info("Window maximized:: which is not a good practice...");
+        return this;
+    }
+
+    public CommonComponentPage assertUrlAndTitle(){
+        String url = WebDriverRunner.url();
+        String titleOfWebpage = title();
+
+        assertEquals("URL does not matched...", ConfigurationProperties.getPropertyValueByKey("guiURL"), url);
+        assertEquals("Title of Page does not matched...", Constants.TITLE_AUTOMATION_BRO, titleOfWebpage);
+        log.info("URL and Title matched");
+        return this;
+    }
+
+    public void loginToMyAccount() {
+        clickOnMyAccount()
+                .enterUserName()
+                .enterPassword()
+                .clickOnLogInButton()
+                .assertUserName();
+    }
+
+    public CommonComponentPage clickOnMyAccount(){
         String titleMyAccount;
-        $(buttonMyAccount)
+        //different type of implementation
+        buttonMyAccount()
+                .should(exist)
                 .shouldBe(visible).click();
-
-
+        log.info("Clicked on My Account");
         titleMyAccount = getWebDriver().getTitle();
-        assertEquals("My Account Title Matched...", Constants.TITLE_MY_ACCOUNT, titleMyAccount);
+        assertEquals("My Account Title not Matched...", Constants.TITLE_MY_ACCOUNT, titleMyAccount);
+        log.info("My Account title matched");
+        return this;
     }
 
-    public void enterUserName() {
+    public CommonComponentPage enterUserName() {
         $(inputUserName)
+                .should(exist)
                 .shouldBe(visible)
-                .val(ConfigurationProperties.getPropertyValueByKey("UserName"));
+                .setValue(ConfigurationProperties.getPropertyValueByKey("UserName"));
+        log.info("Set Username");
+        return this;
     }
 
-    public void enterPassword() throws IOException {
+    public CommonComponentPage enterPassword() {
         $(inputPassword)
+                .should(exist)
                 .shouldBe(visible)
-                .val(ConfigurationProperties.getPropertyValueByKey("Password"));
+                .setValue(ConfigurationProperties.getPropertyValueByKey("Password"));
+        log.info("Set Password");
+        return this;
     }
 
-    public void clickOnLogInButton() throws IOException {
-
-        String a="Priti";
-        String b="Priti";
-
-
-
+    public CommonComponentPage clickOnLogInButton() {
         $(buttonLogIn)
+                .should(exist)
                 .shouldBe(visible).click();
+        log.info("Clicked on Log In Button");
+        return this;
+    }
 
+    public CommonComponentPage assertUserName(){
         String username = $(userName)
+                .should(exist)
                 .shouldBe(visible).getText();
-
-        assertTrue(ConfigurationProperties.getPropertyValueByKey("UserName").contains(username));
+        assertTrue("Username does not matched...",ConfigurationProperties.getPropertyValueByKey("UserName").contains(username));
+//        assertEquals("Username does not matched...", "hiii", username);
+        log.info("Username matched");
+        return this;
     }
 
 }

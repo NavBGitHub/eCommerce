@@ -1,4 +1,4 @@
-package CommonAttributes;
+package Base;
 
 public class Constants {
 

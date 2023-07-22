@@ -11,8 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class SetUpTearDown {
 
@@ -31,7 +30,7 @@ public class SetUpTearDown {
 
     @Before(order = 1)
     public void beforeLocal() throws IOException {
-        log.info("Hi Welcome to Web Automation");
+        log.info("Hi Welcome to Selenide Web Automation");
         setUpLocal();
         setupAllureReports();
     }
@@ -39,9 +38,9 @@ public class SetUpTearDown {
     public void setUpLocal() throws IOException {
         Configuration.browser = "chrome";
         log.info("Browser:: "+Configuration.browser);
-        Configuration.headless = true;
+        Configuration.headless = false;
         log.info("HeadlessMode:: "+Configuration.headless);
-        Configuration.holdBrowserOpen = false;
+        Configuration.holdBrowserOpen = true;
         log.info("Is Browser Holds Open:: "+Configuration.holdBrowserOpen);
         Configuration.screenshots = true;
         log.info("Is Screenshot Captured:: "+Configuration.screenshots);
@@ -55,6 +54,8 @@ public class SetUpTearDown {
 
     @After
     public void after(){
+        clearBrowserLocalStorage();
+        closeWindow();
         closeWebDriver();
         log.info("Quitting WebDriver...");
     }
