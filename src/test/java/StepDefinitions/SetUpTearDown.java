@@ -1,5 +1,6 @@
-package Utilities;
+package StepDefinitions;
 
+import Utilities.ConfigurationProperties;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.cucumber.java.After;
